@@ -28,34 +28,34 @@ public:
     //     //all objects
     // }
     int GameInit() {
-        engines.insert({
-            MAINGAME, 
-            std::make_unique<MainGame>(
-                this,
-                m_pKeyStatus,
-                m_iWindowWidth,
-                m_iWindowHeight,
-                m_pForegroundSurface,
-                m_pBackgroundSurface,
-                m_pSDL2Window,
-                m_pSDL2Renderer,
-                m_pSDL2Texture
-            )
-        });
-        engines.insert({
-            MENU, 
-            std::make_unique<Menu>(
-                this,
-                m_pKeyStatus,
-                m_iWindowWidth,
-                m_iWindowHeight,
-                m_pForegroundSurface,
-                m_pBackgroundSurface,
-                m_pSDL2Window,
-                m_pSDL2Renderer,
-                m_pSDL2Texture
-            )
-        });
+        // engines.insert({
+        //     MAINGAME, 
+        //     std::make_unique<MainGame>(
+        //         this,
+        //         m_pKeyStatus,
+        //         m_iWindowWidth,
+        //         m_iWindowHeight,
+        //         m_pForegroundSurface,
+        //         m_pBackgroundSurface,
+        //         m_pSDL2Window,
+        //         m_pSDL2Renderer,
+        //         m_pSDL2Texture
+        //     )
+        // });
+        // engines.insert({
+        //     MENU, 
+        //     std::make_unique<Menu>(
+        //         this,
+        //         m_pKeyStatus,
+        //         m_iWindowWidth,
+        //         m_iWindowHeight,
+        //         m_pForegroundSurface,
+        //         m_pBackgroundSurface,
+        //         m_pSDL2Window,
+        //         m_pSDL2Renderer,
+        //         m_pSDL2Texture
+        //     )
+        // });
         // TODO more engines
         for (auto const& p : engines) {
             p.second->GameInit();
@@ -104,9 +104,9 @@ public:
 
     // Psyjz9TileManager& GetTileManager() { return engines[cur_engine]->GetTileManager(m_oTileM); }
 private:
-    std::map<State, std::unique_ptr<EngineInterface>> engines;
+    // std::map<State, std::unique_ptr<EngineInterface>> engines;
     // State cur_engine = INIT;
-    State cur_engine = MAINGAME;
+    // State cur_engine = MAINGAME;
 };
 
 

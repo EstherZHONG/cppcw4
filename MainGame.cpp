@@ -38,17 +38,24 @@ void MainGame::SetupBackgroundBuffer()
 
 void MainGame::KeyDown(int iKeyCode) {
     switch(iKeyCode) {
-        case SDLK_ESCAPE:
+        case SDLK_SPACE:
+        if (i_PausedTime < 0) {
             i_PausedTime = GetTime();
-            engine->SetState(MENU);
+            // engine->SetState(MENU);
+
+        } else {
+            IncreaseTimeOffset(i_PausedTime - GetTime());
+            i_PausedTime = -1;
+            Redraw(true);
+        }
     }
 }
 
 void MainGame::Start() {
     // SetupBackgroundBuffer();
-    IncreaseTimeOffset(i_PausedTime - GetTime());
-    i_PausedTime = -1;
-    Redraw(true);
+    // IncreaseTimeOffset(i_PausedTime - GetTime());
+    // i_PausedTime = -1;
+    // Redraw(true);
 }
 
 int MainGame::InitialiseObjects()
@@ -67,17 +74,27 @@ int MainGame::InitialiseObjects()
 }
 
 void MainGame::GameAction() {
-    if (!IsTimeToActWithSleep()) {
-        return;
-    }
-    SetTimeToAct(15);
-    UpdateAllObjects(GetModifiedTime());
-    if (GetModifiedTime() - lastRedraw > 300) { 
-        lastRedraw = GetModifiedTime();  
-        m_oTileM.AddCoinIndex();
-        m_oTileM.DrawAllTiles(this, this->GetBackground(), 0, 0, COLS-1, ROWS-1);
-        DrawStringsUnderneath();
-        CopyAllBackgroundBuffer();
+    if (i_PausedTime < 0) {
+        if (!IsTimeToActWithSleep()) {
+            return;
+        }
+        SetTimeToAct(15);
+        UpdateAllObjects(GetModifiedTime());
+        if (GetModifiedTime() - lastRedraw > 300) { 
+            lastRedraw = GetModifiedTime();  
+            m_oTileM.AddCoinIndex();
+            m_oTileM.DrawAllTiles(this, this->GetBackground(), 0, 0, COLS-1, ROWS-1);
+            DrawStringsUnderneath();
+            CopyAllBackgroundBuffer();
+        }
+    } else {
+        DrawForegroundRectangle(300, 300, 600, 600, 0xffffff);
+        engine->DrawForegroundString(100, 100, "paused", 0x000000);
+        SDL_UpdateTexture( m_pSDL2Texture,NULL,m_pForegroundSurface->pixels,m_pForegroundSurface->pitch );
+        //SDL_RenderClear( m_pSDL2Renderer );
+        SDL_RenderCopy( m_pSDL2Renderer,m_pSDL2Texture,NULL,NULL );
+        SDL_RenderPresent( m_pSDL2Renderer );
+
     }
 }
 

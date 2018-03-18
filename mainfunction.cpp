@@ -14,8 +14,8 @@
 // #include "DemoAMain.h"
 #include "Psyjz9Engine.h"
 
-const int BaseScreenWidth = TILE_WIDTH*COLS+BASEX;
-const int BaseScreenHeight = TILE_HEIGHT*ROWS+BASEY;
+const int BaseScreenWidth = TILE_WIDTH*COLS+2*BASEX;
+const int BaseScreenHeight = TILE_HEIGHT*ROWS+2*BASEY;
 
 
 int main(int argc, char *argv[])

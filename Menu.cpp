@@ -18,7 +18,6 @@ void Menu::KeyDown(int iKeyCode) {
 void Menu::GameAction() {
     DrawForegroundRectangle(300, 300, 600, 600, 0xffffff);
     DrawForegroundString(100, 100, "you", 0x000000);
-
 }
 
 void Menu::GameRender() {

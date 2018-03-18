@@ -1,7 +1,7 @@
 #ifndef CONFIG
 #define CONFIG
 
-enum State { MAINGAME, MENU, INIT };
+enum State { MAINGAME, LEVEL_UP, LOSE, LEVEL_FINISH };
 
 enum Tiles { WALL, COIN, SPACE, CDOOR, ODOOR, KEY };
 
