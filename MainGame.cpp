@@ -44,15 +44,15 @@ void MainGame::SetupBackgroundBuffer()
 void MainGame::KeyDown(int iKeyCode) {
     switch(iKeyCode) {
         case SDLK_SPACE:
-        if (i_PausedTime < 0) {
-            i_PausedTime = GetTime();
-            // engine->SetState(MENU);
+            if (i_PausedTime < 0) {
+                i_PausedTime = GetTime();
+                // engine->SetState(MENU);
 
-        } else {
-            IncreaseTimeOffset(i_PausedTime - GetTime());
-            i_PausedTime = -1;
-            Redraw(true);
-        }
+            } else {
+                IncreaseTimeOffset(i_PausedTime - GetTime());
+                i_PausedTime = -1;
+                Redraw(true);
+            }
     }
 }
 
@@ -182,3 +182,20 @@ void MainGame::MouseUp(int iButton, int iX, int iY) {
 UserObject* MainGame::GetUserObject() {
     return static_cast<UserObject*>(GetDisplayableObject(i_UserIndex));
 }
+
+void MainGame::Win() {
+    engine->SetState(make_unique<MainEngine>(
+        engine,
+        m_pKeyStatus,
+        m_iWindowWidth,
+        m_iWindowHeight,
+        m_pForegroundSurface,
+        m_pBackgroundSurface,
+        m_pSDL2Window,
+        m_pSDL2Renderer,
+        m_pSDL2Texture,
+        ++stage
+    ));
+
+}
+

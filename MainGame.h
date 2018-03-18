@@ -62,6 +62,7 @@ public:
     void ReadMap(char data[ROWS][COLS], int num);
     void MouseDown(int iButton, int iX, int iY);
     void MouseUp(int iButton, int iX, int iY);
+    void Win();
 private:
     Psyjz9TileManager m_oTileM;
     int stage = 0;

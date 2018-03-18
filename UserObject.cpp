@@ -11,9 +11,9 @@ void UserObject::UpdatePosition(int currentTime, Psyjz9TileManager& tm) {
             tm.UpdateTile(m_pMainEngine, m_iMapX, m_iMapY, SPACE);
             tm.UpdateTile(m_pMainEngine, tm.GetDoorX(), tm.GetDoorY(), ODOOR);
             break;
-        // case ODOOR:
-        //     m_pMainEngine->LevelComplete();
-        //     break;
+        case ODOOR:
+            m_pMainEngine->Win();
+            break;
     }
 
     bool flag = false;
