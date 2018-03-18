@@ -31,8 +31,9 @@ public:
         SDL_Surface *m_pBackgroundSurface,
         SDL_Window *m_pSDL2Window,
         SDL_Renderer *m_pSDL2Renderer,
-        SDL_Texture *m_pSDL2Texture
-    ) : EngineInterface(
+        SDL_Texture *m_pSDL2Texture,
+        int stage
+    ) : stage(stage), EngineInterface(
         engine,
         m_pKeyStatus,
         m_iWindowWidth,
@@ -59,7 +60,8 @@ public:
     void MouseUp(int iButton, int iX, int iY);
 private:
     Psyjz9TileManager m_oTileM;
-    int i_PausedTime = 0;
+    int stage = 0;
+    int i_PausedTime = -1;
     char m_aTimeString[9];
     int lastRedraw = 0;
     int i_UserIndex = 1;
