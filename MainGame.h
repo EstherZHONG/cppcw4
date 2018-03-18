@@ -47,7 +47,8 @@ public:
     ~MainGame() {}
     void SetupBackgroundBuffer();
     void KeyDown(int iKeyCode);
-    virtual void Start();
+    // virtual void Start();
+    int GameInit();
     int InitialiseObjects();
     Psyjz9TileManager& GetTileManager() { return m_oTileM; }
     void GameAction();
@@ -55,7 +56,7 @@ public:
     void DrawStringsOnTop();
     void TimeToString();
     Psyjz9Engine *GetMainEngine() { return engine; }
-    void ReadFile(char data[ROWS][COLS], const char* filename);
+    void ReadMap(char data[ROWS][COLS], int num);
     void MouseDown(int iButton, int iX, int iY);
     void MouseUp(int iButton, int iX, int iY);
 private:
@@ -64,8 +65,9 @@ private:
     int i_PausedTime = -1;
     char m_aTimeString[9];
     int lastRedraw = 0;
-    int i_UserIndex = 1;
+    int i_UserIndex = 0;
     UserObject* GetUserObject();
+    char data[ROWS][COLS];
 };
 
 

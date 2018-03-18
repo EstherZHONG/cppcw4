@@ -37,10 +37,10 @@ public:
     ~EngineInterface() {}
     // void SetupBackgroundBuffer();
     // void KeyDown(int iKeyCode);
-    virtual void Start() {
-        SetupBackgroundBuffer();
-        // Redraw(true);
-    }
+    // virtual void Start() {
+    //     SetupBackgroundBuffer();
+    //     // Redraw(true);
+    // }
 
     void SetTime(int m_iTick) {
         this->m_iTick = m_iTick;

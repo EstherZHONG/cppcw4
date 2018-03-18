@@ -4,8 +4,7 @@
 void MainGame::SetupBackgroundBuffer()
 {
     FillBackground(0xffd9b3);
-    char data[ROWS][COLS];
-    ReadFile(data, "Stage1.txt");
+    ReadMap(data, stage);
     m_oTileM.SetSize( COLS, ROWS ); 
     for ( int x = 0 ; x < COLS ; x++ ) {
         for ( int y = 0 ; y < ROWS ; y++ ) {
@@ -13,7 +12,10 @@ void MainGame::SetupBackgroundBuffer()
                 case 'w':
                     m_oTileM.SetValue(x, y, WALL);
                     break;
+                case 'g':
+                    i_UserIndex++;
                 case ' ':
+                case 'u':
                     m_oTileM.SetValue(x, y, SPACE);
                     break;
                 case 'c':
@@ -51,25 +53,43 @@ void MainGame::KeyDown(int iKeyCode) {
     }
 }
 
-void MainGame::Start() {
-    // SetupBackgroundBuffer();
-    // IncreaseTimeOffset(i_PausedTime - GetTime());
-    // i_PausedTime = -1;
-    // Redraw(true);
+// void MainGame::Start() {
+//     SetupBackgroundBuffer();
+//     InitialiseObjects();
+//     // IncreaseTimeOffset(i_PausedTime - GetTime());
+//     // i_PausedTime = -1;
+//     // Redraw(true);
+// }
+
+int MainGame::GameInit() {
+    SetupBackgroundBuffer();
+    InitialiseObjects();
+    return 0;
 }
 
-int MainGame::InitialiseObjects()
-{
+int MainGame::InitialiseObjects() {
     DrawableObjectsChanged();
     DestroyOldObjects();
-    CreateObjectArray(2);
-    StoreObjectInArray(0, new EnemyObject(this, 7, 1));
-    StoreObjectInArray(1, new UserObject(this, 1, 1));
+    CreateObjectArray(i_UserIndex+1);
+    int temp = 0;
+    for ( int x = 0 ; x < COLS ; x++ ) {
+        for ( int y = 0 ; y < ROWS ; y++ ) {
+            switch (data[y][x]) {
+                case 'g':
+                    StoreObjectInArray(temp++, new EnemyObject(this, x, y));
+                    break;
+                case 'u':
+                    StoreObjectInArray(i_UserIndex, new UserObject(this, x, y));
+                    break;
+            }
+        }
+    }
+
     // StoreObjectInArray( 1, new MovingObject(this, 9, 9) );
     // StoreObjectInArray( 2, new MovingObject(this, 13, 9) );
     // StoreObjectInArray( 3, new MovingObject(this, 9, 5) );
     // StoreObjectInArray( 4, new MovingObject(this, 13, 5) );
-    StoreObjectInArray(2, NULL);
+    StoreObjectInArray(i_UserIndex+1, NULL);
     return 0;
 }
 
@@ -121,8 +141,10 @@ void MainGame::TimeToString() {
     sprintf(m_aTimeString, "%02d:%02d:%02d", time, min, sec);
 }
 
-void MainGame::ReadFile(char data[ROWS][COLS], const char* filename) {
-    std::ifstream filein(filename);
+void MainGame::ReadMap(char data[ROWS][COLS], int num) {
+    char string[20];
+    sprintf(string, "Stage_map_%d.txt", num);
+    std::ifstream filein(string);
     std::string buf;
     if (filein.is_open()) {
         for (int i = 0; i < ROWS; ++i) {

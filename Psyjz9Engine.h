@@ -60,7 +60,7 @@ public:
         // printf("%d\n", cur_engine);
         cur_engine.reset(newEngine.release());
         cur_engine->SetTime(GetTime());
-        cur_engine->Start();
+        cur_engine->GameInit();
     }
     // void GameAction() { cur_engine->GameAction(); }
     // void GameAction() { cur_engine->GameAction(); }
