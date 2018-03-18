@@ -13,9 +13,12 @@
 
 #include "EngineInterface.h"
 #include "Psyjz9TileManager.h"
-#include "MovingObject.h"
+// #include "MovingObject.h"
 #include "UserObject.h"
-#include "EnemyObject.h"
+// #include "EnemyObject.h"
+#include "EnemyRandom.h"
+#include "EnemyVerti.h"
+#include "EnemyHori.h"
 
 class Psyjz9Engine;
 

@@ -1,5 +1,6 @@
-#ifndef ENEMY_OBJECT
-#define ENEMY_OBJECT
+#pragma once
+// #ifndef ENEMY_OBJECT
+// #define ENEMY_OBJECT
 
 #include <vector>
 
@@ -17,11 +18,11 @@ public:
     }
     ~EnemyObject() {}
     void Draw();
-    void UpdatePosition(int currentTime, Psyjz9TileManager& tm);
-private:
+    // void UpdatePosition(int currentTime, Psyjz9TileManager& tm);
+protected:
     int m_iDir = 2;
     ImageData enemy_up, enemy_right, enemy_down, enemy_left;
     std::vector<ImageData> images{ enemy_up, enemy_right, enemy_down, enemy_left };
  };
 
- #endif
+ // #endif

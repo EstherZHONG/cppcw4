@@ -12,7 +12,10 @@ void MainGame::SetupBackgroundBuffer()
                 case 'w':
                     m_oTileM.SetValue(x, y, WALL);
                     break;
-                case 'g':
+                case 'r':
+                case 'v':
+                case 'h':
+                case 'a':
                     i_UserIndex++;
                 case ' ':
                 case 'u':
@@ -75,9 +78,18 @@ int MainGame::InitialiseObjects() {
     for ( int x = 0 ; x < COLS ; x++ ) {
         for ( int y = 0 ; y < ROWS ; y++ ) {
             switch (data[y][x]) {
-                case 'g':
-                    StoreObjectInArray(temp++, new EnemyObject(this, x, y));
+                case 'r':
+                    StoreObjectInArray(temp++, new EnemyRandom(this, x, y));
                     break;
+                case 'v':
+                    StoreObjectInArray(temp++, new EnemyVerti(this, x, y));
+                    break;
+                case 'h':
+                    StoreObjectInArray(temp++, new EnemyHori(this, x, y));
+                    break;
+                // case 'a':
+                //     StoreObjectInArray(temp++, new EnemyAStar(this, x, y));
+                //     break;
                 case 'u':
                     StoreObjectInArray(i_UserIndex, new UserObject(this, x, y));
                     break;
