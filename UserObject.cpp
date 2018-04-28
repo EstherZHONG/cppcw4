@@ -1,7 +1,21 @@
+#include <cmath>
 #include "UserObject.h"
 #include "Psyjz9Engine.h"
 
 void UserObject::UpdatePosition(int currentTime, Psyjz9TileManager& tm) {
+    DisplayableObject* pObject;
+    for (int i = 0; (pObject = m_pMainEngine->GetDisplayableObject(i))!=NULL; i++) {
+        if (pObject == this) {
+            continue;
+        }
+        int XDiff = pObject->GetXCentre() - m_iCurrentScreenX;
+        int YDiff = pObject->GetYCentre() - m_iCurrentScreenY;
+        if (abs(pObject->GetXCentre() - m_iCurrentScreenX) < TILE_WIDTH && abs(pObject->GetYCentre() - m_iCurrentScreenY) < TILE_HEIGHT) {
+            m_pMainEngine->LoseGame();
+            return;
+        }
+   }
+
     switch (tm.GetValue(m_iMapX, m_iMapY)) {
         case COIN:
             tm.UpdateTile(m_pMainEngine, m_iMapX, m_iMapY, SPACE);
@@ -13,7 +27,7 @@ void UserObject::UpdatePosition(int currentTime, Psyjz9TileManager& tm) {
             break;
         case ODOOR:
             m_pMainEngine->Win();
-            break;
+            return;
     }
 
     bool flag = false;
@@ -21,7 +35,6 @@ void UserObject::UpdatePosition(int currentTime, Psyjz9TileManager& tm) {
     if (mouse_down) {
         flag = true;
         int mouseX = m_pMainEngine->GetMainEngine()->GetCurrentMouseX(), mouseY = m_pMainEngine->GetMainEngine()->GetCurrentMouseY();
-        // printf("%d %d;%d %d\n", mouseX, mouseY, m_iCurrentScreenX, m_iCurrentScreenY);
         mouseX -= m_iCurrentScreenX;
         mouseY -= m_iCurrentScreenY;
         if (mouseX > 0) {
@@ -89,13 +102,6 @@ void UserObject::UpdatePosition(int currentTime, Psyjz9TileManager& tm) {
 void UserObject::Draw() {
     int iSizeX = TILE_WIDTH/2;
     int iSizeY = TILE_HEIGHT/2;
-    // m_pMainEngine->DrawForegroundOval(
-    //         m_iCurrentScreenX - iSizeX,
-    //         m_iCurrentScreenY - iSizeY,
-    //         m_iCurrentScreenX + iSizeX-1,
-    //         m_iCurrentScreenY + iSizeY-1,
-    //         m_iColor
-    // );
     images[m_iDir].RenderImageWithMask( 
         m_pMainEngine->GetForeground(), 
         0, 

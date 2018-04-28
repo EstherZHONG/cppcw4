@@ -1,8 +1,10 @@
 #include "MainGame.h"
 #include "Psyjz9Engine.h"
+#include "LevelUp.h"
+#include "GameFinish.h"
+#include "Lose.h"
 
-void MainGame::SetupBackgroundBuffer()
-{
+void MainGame::SetupBackgroundBuffer() {
     FillBackground(0xffd9b3);
     ReadMap(data, stage);
     m_oTileM.SetSize( COLS, ROWS ); 
@@ -15,7 +17,7 @@ void MainGame::SetupBackgroundBuffer()
                 case 'r':
                 case 'v':
                 case 'h':
-                case 'a':
+                case 's':
                     i_UserIndex++;
                 case ' ':
                 case 'u':
@@ -37,8 +39,6 @@ void MainGame::SetupBackgroundBuffer()
     }
     m_oTileM.SetBaseTilesPositionOnScreen( BASEX, BASEY );
     m_oTileM.DrawAllTiles( this, this->GetBackground(), 0, 0, COLS-1, ROWS-1 );
-    // DrawBackgroundString(100, 100, "Use arrow keys to move your ball", 0xB0B0B0);
-    // Redraw(true)
 }
 
 void MainGame::KeyDown(int iKeyCode) {
@@ -46,25 +46,17 @@ void MainGame::KeyDown(int iKeyCode) {
         case SDLK_SPACE:
             if (i_PausedTime < 0) {
                 i_PausedTime = GetTime();
-                // engine->SetState(MENU);
-
             } else {
                 IncreaseTimeOffset(i_PausedTime - GetTime());
                 i_PausedTime = -1;
                 Redraw(true);
             }
+        break;
     }
 }
 
-// void MainGame::Start() {
-//     SetupBackgroundBuffer();
-//     InitialiseObjects();
-//     // IncreaseTimeOffset(i_PausedTime - GetTime());
-//     // i_PausedTime = -1;
-//     // Redraw(true);
-// }
-
 int MainGame::GameInit() {
+    SetTimeOffset(-GetTime());
     SetupBackgroundBuffer();
     InitialiseObjects();
     return 0;
@@ -73,7 +65,7 @@ int MainGame::GameInit() {
 int MainGame::InitialiseObjects() {
     DrawableObjectsChanged();
     DestroyOldObjects();
-    CreateObjectArray(i_UserIndex+1);
+    CreateObjectArray(i_UserIndex+2);
     int temp = 0;
     for ( int x = 0 ; x < COLS ; x++ ) {
         for ( int y = 0 ; y < ROWS ; y++ ) {
@@ -87,25 +79,74 @@ int MainGame::InitialiseObjects() {
                 case 'h':
                     StoreObjectInArray(temp++, new EnemyHori(this, x, y));
                     break;
-                // case 'a':
-                //     StoreObjectInArray(temp++, new EnemyAStar(this, x, y));
-                //     break;
+                case 's':
+                    StoreObjectInArray(temp++, new EnemyShortest(this, x, y));
+                    break;
                 case 'u':
                     StoreObjectInArray(i_UserIndex, new UserObject(this, x, y));
                     break;
             }
         }
     }
-
-    // StoreObjectInArray( 1, new MovingObject(this, 9, 9) );
-    // StoreObjectInArray( 2, new MovingObject(this, 13, 9) );
-    // StoreObjectInArray( 3, new MovingObject(this, 9, 5) );
-    // StoreObjectInArray( 4, new MovingObject(this, 13, 5) );
     StoreObjectInArray(i_UserIndex+1, NULL);
+    StoreObjectInArray(i_UserIndex+2, NULL);
     return 0;
 }
 
 void MainGame::GameAction() {
+    if (havewin) {
+        ++stage;
+        DestroyOldObjects();
+        if (stage > TOTAL_STAGE) {
+            engine->SetState(std::make_unique<GameFinish>(
+                engine,
+                m_pKeyStatus,
+                m_iWindowWidth,
+                m_iWindowHeight,
+                m_pForegroundSurface,
+                m_pBackgroundSurface,
+                m_pSDL2Window,
+                m_pSDL2Renderer,
+                m_pSDL2Texture
+            ));
+            return;
+        } else {
+            engine->SetState(std::make_unique<LevelUp>(
+                engine,
+                m_pKeyStatus,
+                m_iWindowWidth,
+                m_iWindowHeight,
+                m_pForegroundSurface,
+                m_pBackgroundSurface,
+                m_pSDL2Window,
+                m_pSDL2Renderer,
+                m_pSDL2Texture,
+                stage
+            ));          
+            return;
+        }
+    } else if (havelose) {
+        engine->SetState(std::make_unique<Lose>(
+            engine,
+            m_pKeyStatus,
+            m_iWindowWidth,
+            m_iWindowHeight,
+            m_pForegroundSurface,
+            m_pBackgroundSurface,
+            m_pSDL2Window,
+            m_pSDL2Renderer,
+            m_pSDL2Texture
+        ));
+        return;
+    }
+
+    if (GetModifiedTime() > 1000 && create) {
+        create = false;
+        StoreObjectInArray(i_UserIndex+1, GetDisplayableObject(i_UserIndex));
+        StoreObjectInArray(i_UserIndex, new EnemyShortest(this, 1, 1));
+        i_UserIndex++;
+    }
+
     if (i_PausedTime < 0) {
         if (!IsTimeToActWithSleep()) {
             return;
@@ -120,20 +161,18 @@ void MainGame::GameAction() {
             CopyAllBackgroundBuffer();
         }
     } else {
-        DrawForegroundRectangle(300, 300, 600, 600, 0xffffff);
-        engine->DrawForegroundString(100, 100, "paused", 0x000000);
+        DrawForegroundRectangle(400, 290, 600, 390, 0x802b00);
+        engine->DrawForegroundString(460, 330, "paused", 0xffddcc);
         SDL_UpdateTexture( m_pSDL2Texture,NULL,m_pForegroundSurface->pixels,m_pForegroundSurface->pitch );
-        //SDL_RenderClear( m_pSDL2Renderer );
         SDL_RenderCopy( m_pSDL2Renderer,m_pSDL2Texture,NULL,NULL );
         SDL_RenderPresent( m_pSDL2Renderer );
 
     }
+
 }
 
 void MainGame::DrawStringsUnderneath() {
-    // CopyBackgroundPixels( 100/*X*/, 100/*Y*/, GetWindowWidth(), 30/*Height*/ );
-    // DrawForegroundString( 250, 10, "Running", 0xffffff, NULL );
-    engine->DrawBackgroundString(2*TILE_WIDTH+BASEX, TILE_HEIGHT+BASEY+20, "Use arrow keys to move your mushroom", 0xB0B0B0);
+    engine->DrawBackgroundString(2*TILE_WIDTH+BASEX, TILE_HEIGHT+BASEY+20, "Use arrow keys to control", 0xB0B0B0);
 }
 void MainGame::DrawStringsOnTop() {
     if ( GetModifiedTime()/10 % 10 == 0 ) {
@@ -184,18 +223,9 @@ UserObject* MainGame::GetUserObject() {
 }
 
 void MainGame::Win() {
-    engine->SetState(make_unique<MainEngine>(
-        engine,
-        m_pKeyStatus,
-        m_iWindowWidth,
-        m_iWindowHeight,
-        m_pForegroundSurface,
-        m_pBackgroundSurface,
-        m_pSDL2Window,
-        m_pSDL2Renderer,
-        m_pSDL2Texture,
-        ++stage
-    ));
-
+    havewin = true;
+}
+void MainGame::LoseGame() {
+    havelose = true;
 }
 

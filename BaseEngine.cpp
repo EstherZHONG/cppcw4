@@ -235,7 +235,6 @@ int BaseEngine::MainLoop(void)
 {
     SDL_Event event;
 	int iKeyCode;
-
 	// Main loop: loop until told not to
 	while (m_iExitWithCode==-1)
 	{
@@ -280,10 +279,8 @@ int BaseEngine::MainLoop(void)
 				return 0;
 			}
 		}
-
 		// Do any updates for movements
 		GameAction();
-
 		// Render the screen
 		GameRender();
 	}

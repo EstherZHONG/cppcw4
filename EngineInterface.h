@@ -1,17 +1,17 @@
-#ifndef ENGINE_INTERFACE
-#define ENGINE_INTERFACE
+#pragma once
+
+// #ifndef ENGINE_INTERFACE
+// #define ENGINE_INTERFACE
 
 #include "header.h"
 #include "templates.h"
 #include "config.h"
 
 #include "BaseEngine.h"
-// #include "Psyjz9TileManager.h"
 
 class Psyjz9Engine;
 
-class EngineInterface : public BaseEngine
-{
+class EngineInterface : public BaseEngine {
 public:
     EngineInterface(
         Psyjz9Engine *engine,
@@ -35,25 +35,16 @@ public:
         this->m_pSDL2Texture = m_pSDL2Texture;
     }
     ~EngineInterface() {}
-    // void SetupBackgroundBuffer();
-    // void KeyDown(int iKeyCode);
-    // virtual void Start() {
-    //     SetupBackgroundBuffer();
-    //     // Redraw(true);
-    // }
 
     void SetTime(int m_iTick) {
         this->m_iTick = m_iTick;
     }
-    // void DrawString(int iX, int iY, const char* pText, unsigned int uiColour, Font* pFont, SDL_Surface* pTarget);
 protected:
-    // Psyjz9TileManager m_oTileM;
     Psyjz9Engine *engine;
-    // int i_PausedTime = -1;
 
 };
 
 
 
 
-#endif
+// #endif

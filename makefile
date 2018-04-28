@@ -5,9 +5,7 @@ CC = g++
 
 LIBS = -I$(SDL_DIR) -D_REENTRANT -lSDL2 -lSDL2_ttf -lSDL2_image
 
-DEPS = BaseEngine.cpp FontManager.cpp TileManager.cpp DisplayableObject.cpp JPGImage.cpp MainGame.cpp Psyjz9TileManager.cpp MovingObject.cpp UserObject.cpp EnemyObject.cpp Psyjz9Engine.cpp EnemyRandom.cpp EnemyVerti.cpp EnemyHori.cpp
-
-# BouncingBallMain.cpp BouncingBall.cpp Demo1Main.cpp Demo2Main.cpp Demo2Object.cpp Demo2TileManager.cpp Demo3Main.cpp Demo3Object.cpp Demo3ObjectFinished.cpp Demo3TileManager.cpp Demo4Main.cpp Demo4Object.cpp Demo4TileManager.cpp SimpleDemo.cpp
+DEPS = BaseEngine.cpp FontManager.cpp TileManager.cpp DisplayableObject.cpp JPGImage.cpp MainGame.cpp Psyjz9TileManager.cpp MovingObject.cpp UserObject.cpp EnemyObject.cpp Psyjz9Engine.cpp EnemyRandom.cpp EnemyVerti.cpp EnemyHori.cpp LevelUp.cpp GameFinish.cpp Lose.cpp EnemyShortest.cpp
 
 OUTPUT = ./a.out
 

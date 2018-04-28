@@ -14,7 +14,6 @@ int Psyjz9Engine::GameInit() {
         1
     ));
     cur_engine->GameInit();
-    // cur_engine->Start();
     return 0;
 }
   

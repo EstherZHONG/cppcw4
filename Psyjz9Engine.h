@@ -12,21 +12,13 @@
 
 #include "BaseEngine.h"
 #include "MainGame.h"
-// #include "Menu.h"
 #include "EngineInterface.h"
 #include "make_unique.h" 
 
-class Psyjz9Engine : public BaseEngine
-{
+class Psyjz9Engine : public BaseEngine {
 public:
     Psyjz9Engine() : BaseEngine() {}
     ~Psyjz9Engine() {}
-    // void SetupBackgroundBuffer() {
-    //     //all stage.set
-    // }
-    // int InitialiseObjects() {
-    //     //all objects
-    // }
     int GameInit();
     void GameAction() {
         cur_engine->SetTime(GetTime());
@@ -57,21 +49,11 @@ public:
     }
 
     void SetState(std::unique_ptr<EngineInterface> newEngine) {
-        // printf("%d\n", cur_engine);
         cur_engine.reset(newEngine.release());
         cur_engine->SetTime(GetTime());
         cur_engine->GameInit();
     }
-    // void GameAction() { cur_engine->GameAction(); }
-    // void GameAction() { cur_engine->GameAction(); }
-
-
-
-    // Psyjz9TileManager& GetTileManager() { return cur_engine->GetTileManager(m_oTileM); }
 private:
-    // std::map<State, std::unique_ptr<EngineInterface>> engines;
-    // State cur_engine = INIT;
-    // State cur_engine = MAINGAME;
     std::unique_ptr<EngineInterface> cur_engine;
 };
 

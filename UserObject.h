@@ -15,14 +15,6 @@ public:
         m_iStartDrawPosY = -TILE_HEIGHT/2-30;
         m_iDrawHeight = TILE_HEIGHT+30;
         ImageData temp;
-        // temp.LoadImage("mush_up.png");
-        // images[0].ResizeFrom(&temp, TILE_WIDTH, TILE_HEIGHT, false);
-        // temp.LoadImage("mush_right.png");
-        // images[1].ResizeFrom(&temp, TILE_WIDTH, TILE_HEIGHT, false);
-        // temp.LoadImage("mush_down.png");
-        // images[2].ResizeFrom(&temp, TILE_WIDTH, TILE_HEIGHT, false);
-        // temp.LoadImage("mush_left.png");
-        // images[3].ResizeFrom(&temp, TILE_WIDTH, TILE_HEIGHT, false);
         images[0].LoadImage("mush_up.png");
         images[1].LoadImage("mush_right.png");
         images[2].LoadImage("mush_down.png");

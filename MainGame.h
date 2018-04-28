@@ -13,12 +13,11 @@
 
 #include "EngineInterface.h"
 #include "Psyjz9TileManager.h"
-// #include "MovingObject.h"
 #include "UserObject.h"
-// #include "EnemyObject.h"
 #include "EnemyRandom.h"
 #include "EnemyVerti.h"
 #include "EnemyHori.h"
+#include "EnemyShortest.h"
 
 class Psyjz9Engine;
 
@@ -50,7 +49,6 @@ public:
     ~MainGame() {}
     void SetupBackgroundBuffer();
     void KeyDown(int iKeyCode);
-    // virtual void Start();
     int GameInit();
     int InitialiseObjects();
     Psyjz9TileManager& GetTileManager() { return m_oTileM; }
@@ -63,14 +61,18 @@ public:
     void MouseDown(int iButton, int iX, int iY);
     void MouseUp(int iButton, int iX, int iY);
     void Win();
+    void LoseGame();
+    UserObject* GetUserObject();
 private:
+    bool create = true;
+    bool havewin = false;
+    bool havelose = false;
     Psyjz9TileManager m_oTileM;
     int stage = 0;
     int i_PausedTime = -1;
     char m_aTimeString[9];
     int lastRedraw = 0;
     int i_UserIndex = 0;
-    UserObject* GetUserObject();
     char data[ROWS][COLS];
 };
 
